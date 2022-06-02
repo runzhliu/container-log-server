@@ -125,7 +125,7 @@ func list(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, body)
+	c.JSON(http.StatusOK, rs)
 }
 
 // @title container-log-server API

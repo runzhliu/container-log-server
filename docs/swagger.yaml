@@ -1,0 +1,67 @@
+info:
+  contact:
+    email: runzhliu@163.com
+    name: drummerliu
+  description: k8s本地日志服务器
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: log-server API
+  version: "1.0"
+paths:
+  /v1/log:
+    get:
+      consumes:
+      - application/json
+      description: 注意参数格式
+      parameters:
+      - default: 10.9.70.1
+        description: 母机节点
+        in: query
+        name: host
+        required: true
+        type: string
+      - default: test-a
+        description: Pod名
+        in: query
+        name: pod
+        required: true
+        type: string
+      - default: test
+        description: 容器名
+        in: query
+        name: container
+        required: true
+        type: string
+      - default: test.log
+        description: 日志名
+        in: query
+        name: log
+        required: true
+        type: string
+      responses: {}
+      summary: k8s日志下载接口
+  /v1/test:
+    get:
+      consumes:
+      - application/json
+      description: 注意参数格式
+      parameters:
+      - default: localhost:8000
+        description: 远程地址
+        in: query
+        name: remote
+        required: true
+        type: string
+      - default: test.log
+        description: 日志名
+        in: query
+        name: log
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试接口
+swagger: "2.0"

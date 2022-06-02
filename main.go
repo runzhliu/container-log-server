@@ -45,7 +45,7 @@ func getFileServerPodIp(nodeName string) string {
 // @Param container query string true "容器名" default(test)
 // @Param log query string true "日志名" default(test.log)
 // @Router /v1/log/download [get]
-func run(c *gin.Context) {
+func download(c *gin.Context) {
 	host := c.Request.URL.Query().Get("host")
 	pod := c.Request.URL.Query().Get("pod")
 	container := c.Request.URL.Query().Get("container")
@@ -122,7 +122,7 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := r.Group("/v1/log")
 	{
-		apiV1.GET("/download", run)
+		apiV1.GET("/download", download)
 		apiV1.GET("/list", list)
 	}
 	r.Run()

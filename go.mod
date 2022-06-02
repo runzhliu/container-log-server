@@ -1,4 +1,4 @@
-module github/runzhliu/log-server
+module github/runzhliu/container-log-server
 
 go 1.17
 

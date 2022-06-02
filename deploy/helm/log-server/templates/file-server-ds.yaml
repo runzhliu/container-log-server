@@ -13,16 +13,13 @@ spec:
         app: file-server-ds
     spec:
       containers:
-        - image: harbor.dev-fql.com/middleware/nginx:latest
+        - image: nginx:latest
           imagePullPolicy: Always
           name: file-server-ds
           volumeMounts:
             - mountPath: /usr/share/nginx/html
-              name: vol1
-      imagePullSecrets:
-        - name: lexin-registry
+              name: log
       volumes:
         - hostPath:
             path: /var/lib/docker/logs/apps/
-            type: ""
-          name: vol1
+          name: log

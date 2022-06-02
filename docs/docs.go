@@ -12,7 +12,7 @@ const docTemplate_swagger = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "drummerliu",
+            "name": "runzhliu",
             "email": "runzhliu@163.com"
         },
         "license": {
@@ -24,7 +24,7 @@ const docTemplate_swagger = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/log": {
+        "/v1/log/download": {
             "get": {
                 "description": "注意参数格式",
                 "consumes": [
@@ -68,30 +68,35 @@ const docTemplate_swagger = `{
                 "responses": {}
             }
         },
-        "/v1/test": {
+        "/v1/log/list": {
             "get": {
                 "description": "注意参数格式",
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "测试接口",
+                "summary": "k8s日志清单接口",
                 "parameters": [
                     {
                         "type": "string",
-                        "default": "localhost:8000",
-                        "description": "远程地址",
-                        "name": "remote",
+                        "default": "10.9.70.1",
+                        "description": "母机节点",
+                        "name": "host",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "default": "test.log",
-                        "description": "日志名",
-                        "name": "log",
+                        "default": "test-a",
+                        "description": "Pod名",
+                        "name": "pod",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test",
+                        "description": "容器名",
+                        "name": "container",
                         "in": "query",
                         "required": true
                     }
@@ -108,7 +113,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "log-server API",
+	Title:            "container-log-server API",
 	Description:      "k8s本地日志服务器",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate_swagger,

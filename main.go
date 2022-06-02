@@ -97,7 +97,7 @@ func list(c *gin.Context) {
 	container := c.Request.URL.Query().Get("container")
 
 	fileServerPod := getFileServerPodIp(host)
-	url := fmt.Sprintf("http://%s/%s/flume/%s/%s/", fileServerPod, pod, container)
+	url := fmt.Sprintf("http://%s/%s/flume/%s/", fileServerPod, pod, container)
 
 	method := "GET"
 

@@ -2,17 +2,27 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "github/runzhliu/container-log-server/docs"
+	"io/ioutil"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"net/http"
 	"os"
 )
+
+type FileServerResponse []struct {
+	Mtime string `json:"mtime"`
+	Name  string `json:"name"`
+	Size  int64  `json:"size"`
+	Type  string `json:"type"`
+}
 
 var namespace = os.Getenv("POD_NAMESPACE")
 var serverLabel = "app=file-server-ds"
@@ -79,6 +89,7 @@ func download(c *gin.Context) {
 // @Param host query string true "母机节点" default(10.9.70.1)
 // @Param pod query string true "Pod名" default(test-a)
 // @Param container query string true "容器名" default(test)
+// @Success 200 object FileServerResponse
 // @Router /v1/log/list [get]
 func list(c *gin.Context) {
 	host := c.Request.URL.Query().Get("host")
@@ -86,25 +97,35 @@ func list(c *gin.Context) {
 	container := c.Request.URL.Query().Get("container")
 
 	fileServerPod := getFileServerPodIp(host)
-	url := fmt.Sprintf("http://%s/%s/flume/%s/%s", fileServerPod, pod, container)
+	url := fmt.Sprintf("http://%s/%s/flume/%s/%s/", fileServerPod, pod, container)
 
-	// create client
-	client := grab.NewClient()
-	req, _ := grab.NewRequest(".", url)
+	method := "GET"
 
-	resp := client.Do(req)
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
 
-	// set header
-	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", resp.Filename))
-	c.Writer.Header().Add("Content-Type", "application/octet-stream")
-
-	// check for errors
-	if err := resp.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "Download failed: %v\n", err)
-		os.Exit(1)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	c.File(fmt.Sprintf("/app/%s", resp.Filename))
+	res, err := client.Do(req)
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	var rs FileServerResponse
+	err = json.Unmarshal(body, &rs)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, body)
 }
 
 // @title container-log-server API

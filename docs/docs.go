@@ -101,7 +101,31 @@ const docTemplate_swagger = `{
                         "required": true
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "mtime": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "size": {
+                                        "type": "integer"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

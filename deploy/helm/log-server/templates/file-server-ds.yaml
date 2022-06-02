@@ -13,13 +13,19 @@ spec:
         app: file-server-ds
     spec:
       containers:
-        - image: nginx:latest
+        - image: harbor.dev-fql.com/middleware/nginx:latest
           imagePullPolicy: Always
           name: file-server-ds
           volumeMounts:
+            - name: file-server-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
             - mountPath: /usr/share/nginx/html
               name: log
       volumes:
+        - name: file-server-config
+          configMap:
+            name: file-server-config
         - hostPath:
             path: /var/lib/docker/logs/apps/
           name: log

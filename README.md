@@ -53,6 +53,17 @@
 helm install container-log-server --createnamespace --namespace log .
 ```
 
+## Example
+
+接口文档
+
+![img.png](img.png)
+
+日志清单
+
+![img_1.png](img_1.png)
+
+
 ## TODO
 
 - [x] helm部署

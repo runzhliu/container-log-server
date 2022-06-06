@@ -90,6 +90,7 @@ func download(c *gin.Context) {
 // @Param pod query string true "Pod名" default(test-a)
 // @Param container query string true "容器名" default(test)
 // @Success 200 object FileServerResponse
+// @Success 404 object FileServerResponse
 // @Router /v1/log/list [get]
 func list(c *gin.Context) {
 	host := c.Request.URL.Query().Get("host")

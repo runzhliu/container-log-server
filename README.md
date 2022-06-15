@@ -2,7 +2,7 @@
 
 ## Overview
 
-User always wants to obtain the logs in the container even after the container exits, unfortunately, as the default settings for K8S cluster, the container files would be clear soon after the container exists.
+User always wants to obtain the logs in the container even after the container exits, unfortunately, as the default settings for K8S cluster, the logs of the pod/containers would be clean soon after the container exit.
 
 The purpose of this project is to provide users with an interface to download log files. Of course, the premise is that the log of the container needs to be persisted locally, which can be done by `hostpath` or other methods.
 

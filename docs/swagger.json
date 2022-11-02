@@ -1,0 +1,123 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "k8s本地日志服务器",
+        "title": "container-log-server API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "runzhliu",
+            "email": "runzhliu@163.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/v1/log/download": {
+            "get": {
+                "description": "注意参数格式",
+                "consumes": [
+                    "application/json"
+                ],
+                "summary": "k8s日志下载接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "10.9.70.1",
+                        "description": "母机节点",
+                        "name": "host",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test-a",
+                        "description": "Pod名",
+                        "name": "pod",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test",
+                        "description": "容器名",
+                        "name": "container",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test.log",
+                        "description": "日志名",
+                        "name": "log",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/log/list": {
+            "get": {
+                "description": "注意参数格式",
+                "consumes": [
+                    "application/json"
+                ],
+                "summary": "k8s日志清单接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "10.9.70.1",
+                        "description": "母机节点",
+                        "name": "host",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test-a",
+                        "description": "Pod名",
+                        "name": "pod",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "test",
+                        "description": "容器名",
+                        "name": "container",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "mtime": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "size": {
+                                        "type": "integer"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
